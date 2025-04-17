@@ -13,11 +13,11 @@
     body {
       font-family: 'Segoe UI', sans-serif;
       line-height: 1.6;
-      background: #111;
+      background: #0D1B2A; /* Dark blue background */
       color: #f5f5f5;
     }
     header {
-      background: #222;
+      background: #1E2A47; /* Darker blue header */
       padding: 20px 40px;
       text-align: center;
     }
@@ -48,7 +48,7 @@
       font-size: 1.2rem;
       color: #ccc;
     }
-    .portfolio, .contact {
+    .portfolio, .blog, .contact {
       background: #1b1b1b;
       border-radius: 10px;
       margin-top: 30px;
@@ -58,6 +58,12 @@
       margin-bottom: 20px;
     }
     .project h3 {
+      color: #ff3c3c;
+    }
+    .blog-post {
+      margin-bottom: 20px;
+    }
+    .blog-post h3 {
       color: #ff3c3c;
     }
     form input, form textarea {
@@ -84,12 +90,31 @@
       background: #222;
       color: #888;
     }
-.profilepic img {
-  border-radius: 50%;
-  max-width: 100%;
-  height: auto;
-  width: 150px; /* You can adjust the default size */
-}
+    .profilepic img {
+      border-radius: 50%;
+      max-width: 100%;
+      height: auto;
+      width: 150px; /* You can adjust the default size */
+    }
+    .blog-posts {
+      margin-top: 20px;
+    }
+    .blog-card {
+      background: #333;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+    .blog-card button {
+      background: #e02b2b;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .blog-card button:hover {
+      background: #ff3c3c;
+    }
   </style>
 </head>
 <body>
@@ -99,68 +124,116 @@
     <nav>
       <a href="#about">About</a>
       <a href="#portfolio">Projects</a>
+      <a href="#blog">Blog</a>
       <a href="#contact">Contact</a>
     </nav>
   </header>
 
   <section class="hero">
-    <h2>Hello, I'm Ivan 👋</h2><div class="profilepic"><img src="A Cool Boy Web Developer Cartoon Programmer Graphic Designer Flat Ai Generated Image Illustration _ JPG Free Download - Pikbest.jpg" alt="" ></div>
+    <h2>Hello, I'm Ivan 👋</h2>
+    <div class="profilepic">
+      <img src="A Cool Boy Web Developer Cartoon Programmer Graphic Designer Flat Ai Generated Image Illustration _ JPG Free Download - Pikbest.jpg" alt="" >
+    </div>
     <p>Aspiring Game Developer | Gamer | Tech Enthusiast</p>
   </section>
 
   <section id="about">
     <h2>About Me</h2>
-    <p>I'm a passionate Game developer who loves creating simple , clean and interactive 2D and 3D Games. I enjoy learning new technologies and building fun side projects.</p>
+    <p>I'm a passionate Game developer who loves creating simple, clean and interactive 2D and 3D Games. I enjoy learning new technologies and building fun side projects.</p>
   </section>
 
   <section id="portfolio" class="portfolio">
     <h2>Projects</h2>
     <div class="project">
       <h3>🎮 Project One</h3>
-      <p>A complex 3d open map game.</p>
+      <p>A complex 3D open map game.</p>
     </div>
     <div class="project">
       <h3>🕹️ JavaScript Game</h3>
-      <p>A mini JavaScript 2d game based on godot4.4 engine.</p>
+      <p>A mini JavaScript 2D game based on Godot 4.4 engine.</p>
     </div>
   </section>
 
-<section id="contact" class="contact">
-  <h2>Contact Me</h2>
-<form
-  action="https://formspree.io/f/mnnplgdl"
-  method="POST"
->
-  <label>
-    Your email:
-    <input type="email" name="email">
-  </label>
-  <label>
-    Your message:
-    <textarea name="message"></textarea>
-  </label>
-  <!-- your other form fields go here -->
-  <button type="submit">Send</button>
-</form>
-</section>
+  <section id="blog" class="blog">
+    <h2>Blog</h2>
+    <form id="blogForm">
+      <label for="title">Blog Title</label>
+      <input type="text" id="title" placeholder="Enter blog title" required>
 
+      <label for="content">Content</label>
+      <textarea id="content" placeholder="Write your post here..." required></textarea>
+
+      <button type="submit">Add Post</button>
+    </form>
+
+    <div class="blog-posts" id="blogPosts"></div>
+  </section>
+
+  <section id="contact" class="contact">
+    <h2>Contact Me</h2>
+    <form action="https://formspree.io/f/mnnplgdl" method="POST">
+      <label>
+        Your email:
+        <input type="email" name="email">
+      </label>
+      <label>
+        Your message:
+        <textarea name="message"></textarea>
+      </label>
+      <button type="submit">Send</button>
+    </form>
+  </section>
 
   <footer>
     <p>&copy; 2025 Ivan Petrov. All rights reserved.</p>
   </footer>
 
   <script>
-
-
     document.querySelectorAll('nav a').forEach(link => {
       link.addEventListener('click', e => {
         e.preventDefault();
-        document.querySelector(link.getAttribute('href')).scrollIntoView({
-          behavior: 'smooth'
-        });
+        const targetId = link.getAttribute('href').substring(1); // Remove the '#' from the href
+        const targetElement = document.getElementById(targetId);
+  
+        if (targetElement) {
+          smoothScroll(targetElement);
+        }
       });
     });
+  
+    function smoothScroll(target) {
+      const startPosition = window.pageYOffset; // Current scroll position
+      const targetPosition = target.getBoundingClientRect().top + window.pageYOffset; // Target scroll position
+      const distance = targetPosition - startPosition; // Distance to scroll
+      const duration = 1000; // Duration in milliseconds (1000ms = 1 second)
+      let startTime = null;
+  
+      // Easing function for smooth scroll (easeInOutQuad)
+      function easingFunction(t, b, c, d) {
+        t /= d / 2;
+        if (t < 1) return (c / 2) * t * t + b;
+        t--;
+        return (-c / 2) * (t * (t - 2) - 1) + b;
+      }
+  
+      // Scroll animation loop
+      function animation(currentTime) {
+        if (!startTime) startTime = currentTime;
+        const timeElapsed = currentTime - startTime;
+        const scrollAmount = easingFunction(timeElapsed, startPosition, distance, duration);
+  
+        window.scrollTo(0, scrollAmount);
+  
+        if (timeElapsed < duration) {
+          requestAnimationFrame(animation);
+        }
+      }
+  
+      // Start the smooth scroll animation
+      requestAnimationFrame(animation);
+    }
   </script>
+  
 
 </body>
 </html>
